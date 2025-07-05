@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ site_settings.site_name|default:"SkillGrid" }}{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}{{ site_settings.site_description|default:"Professional freelance services including web design, content writing, logo design, poster making, translation, and graphic design." }}{% endblock %}">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo">
+            <img src="{% static 'images/skillgrid_logo.png' %}" alt="SkillGrid Logo" style="height: 54px; width: auto; border-radius: 12px; background: transparent;" />
+            <span style="font-size: 2.1rem; font-weight: 700; color: #fff; letter-spacing: 2px;">skill<span class="grid">GRID</span></span>
+        </a>
+        <div class="hamburger" aria-label="Open navigation" tabindex="0">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <div class="nav-menu">
+            <a href="/" class="nav-link {% if request.path == '/' %}active{% endif %}">Home</a>
+            <a href="/services/" class="nav-link {% if 'services' in request.path %}active{% endif %}">Services</a>
+            <a href="/portfolio/" class="nav-link {% if 'portfolio' in request.path %}active{% endif %}">Portfolio</a>
+            <a href="/about/" class="nav-link {% if 'about' in request.path %}active{% endif %}">About</a>
+            <a href="/news/" class="nav-link {% if 'news' in request.path %}active{% endif %}">News</a>
+            <a href="/contact/" class="nav-link {% if 'contact' in request.path %}active{% endif %}">Contact</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <img src="{% static 'images/skillgrid_logo.png' %}" alt="SkillGrid Logo" style="height: 48px; width: auto; border-radius: 10px; margin-bottom: 0.7rem; box-shadow: 0 2px 12px #00c6ff33; background: transparent;" />
+                    <h3>{{ site_settings.site_name|default:"SkillGrid" }}</h3>
+                    <p>{{ site_settings.site_description|default:"Professional freelance services for all your creative and digital needs." }}</p>
+                    <div class="social-links">
+                        {% if site_settings.social_linkedin %}
+                            <a href="{{ site_settings.social_linkedin }}" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        {% endif %}
+                        {% if site_settings.social_twitter %}
+                            <a href="https://x.com/MananKumar89839" target="_blank"><i class="fab fa-twitter"></i></a>
+                        {% endif %}
+                        {% if site_settings.social_instagram %}
+                            <a href="{{ site_settings.social_instagram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                        {% endif %}
+                        {% if site_settings.social_behance %}
+                            <a href="{{ site_settings.social_behance }}" target="_blank"><i class="fab fa-behance"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="{% url 'core:services' %}">Web Design</a></li>
+                        <li><a href="{% url 'core:services' %}">Content Writing</a></li>
+                        <li><a href="{% url 'core:services' %}">Graphic Design</a></li>
+                        <li><a href="{% url 'core:services' %}">Logo Design</a></li>
+                        <li><a href="{% url 'core:services' %}">Translation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="{% url 'core:home' %}">Home</a></li>
+                        <li><a href="{% url 'portfolio:portfolio_list' %}">Portfolio</a></li>
+                        <li><a href="{% url 'core:about' %}">About</a></li>
+                        <li><a href="{% url 'contact:contact' %}">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    {% if site_settings.contact_email %}
+                        <p><i class="fas fa-envelope"></i> {{ site_settings.contact_email }}</p>
+                    {% endif %}
+                    {% if site_settings.contact_phone %}
+                        <p><i class="fas fa-phone"></i> {{ site_settings.contact_phone }}</p>
+                    {% endif %}
+                    {% if site_settings.address %}
+                        <p><i class="fas fa-map-marker-alt"></i> {{ site_settings.address }}</p>
+                    {% else %}
+                        <p><i class="fas fa-map-marker-alt"></i> Available Worldwide</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} {{ site_settings.site_name|default:"SkillGrid" }}. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <div class="message message-{{ message.tags }}">
+                    {{ message }}
+                    <button class="message-close">&times;</button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <script src="{% static 'js/script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+
+    <!-- AI Chatbot Widget -->
+    <div id="ai-chatbot-widget" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999;">
+      <div id="ai-chatbot-toggle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border-radius: 50%; width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); font-size: 1.8rem; transition: all 0.3s ease; animation: pulse 2s infinite;">
+        <i class="fas fa-robot"></i>
+      </div>
+      <div id="ai-chatbot-box" style="display: none; width: 350px; background: rgba(15,15,25,0.98); color: #fff; border-radius: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4); padding: 0; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 16px 20px; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 1.1rem;"><i class="fas fa-robot" style="margin-right: 8px;"></i> SkillGrid AI Assistant</span>
+          <span id="ai-chatbot-close" style="cursor:pointer; font-size: 1.4rem; opacity: 0.8; transition: opacity 0.3s ease;">&times;</span>
+        </div>
+        <div id="ai-chatbot-log" style="padding: 16px 20px; height: 280px; overflow-y: auto; font-size: 0.95rem; background: #0f0f19; line-height: 1.5;"></div>
+        <div style="display: flex; border-top: 1px solid rgba(255,255,255,0.1); background: #0f0f19;">
+          <input id="ai-chatbot-input" type="text" placeholder="Ask me about our services or just chat..." style="flex:1; border:none; outline:none; padding: 12px 16px; background: #1a1a2e; color: #fff; font-size: 0.95rem; border-radius: 0 0 0 20px; border-right: 1px solid rgba(255,255,255,0.1);" />
+          <button id="ai-chatbot-send" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; border:none; padding: 0 20px; font-size: 1rem; border-radius: 0 0 20px 0; cursor:pointer; transition: all 0.3s ease; font-weight: 500;">Send</button>
+        </div>
+      </div>
+    </div>
+    <style>
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+      #ai-chatbot-toggle:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+      }
+      #ai-chatbot-close:hover {
+        opacity: 1 !important;
+      }
+      #ai-chatbot-send:hover {
+        background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+        transform: translateY(-1px);
+      }
+      #ai-chatbot-input:focus {
+        background: #232342 !important;
+      }
+      #ai-chatbot-log::-webkit-scrollbar {
+        width: 6px;
+      }
+      #ai-chatbot-log::-webkit-scrollbar-track {
+        background: #1a1a2e;
+      }
+      #ai-chatbot-log::-webkit-scrollbar-thumb {
+        background: #667eea;
+        border-radius: 3px;
+      }
+    </style>
+    <script>
+      const toggle = document.getElementById('ai-chatbot-toggle');
+      const box = document.getElementById('ai-chatbot-box');
+      const close = document.getElementById('ai-chatbot-close');
+      const log = document.getElementById('ai-chatbot-log');
+      const input = document.getElementById('ai-chatbot-input');
+      const send = document.getElementById('ai-chatbot-send');
+      
+      // Add welcome message when chat opens
+      let isFirstOpen = true;
+      
+      toggle.onclick = () => { 
+        box.style.display = 'flex'; 
+        toggle.style.display = 'none'; 
+        input.focus();
+        
+        if (isFirstOpen) {
+          appendMsg('AI', '👋 Hi! I\'m your SkillGrid AI assistant. I can help you with questions about our services (web design, content writing, graphic design, logo design, translation, counselling, notes) or just chat with you. How can I help today?');
+          isFirstOpen = false;
+        }
+      };
+      
+      close.onclick = () => { box.style.display = 'none'; toggle.style.display = 'flex'; };
+      
+      function appendMsg(sender, msg) {
+        const timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const senderColor = sender === 'You' ? '#667eea' : '#ffb347';
+        const senderIcon = sender === 'You' ? '👤' : '🤖';
+        
+        log.innerHTML += `
+          <div style='margin-bottom: 12px; padding: 8px 12px; background: ${sender === 'You' ? 'rgba(102, 126, 234, 0.1)' : 'rgba(255, 179, 71, 0.1)'}; border-radius: 12px; border-left: 3px solid ${senderColor};'>
+            <div style='display: flex; align-items: center; margin-bottom: 4px;'>
+              <span style='margin-right: 8px;'>${senderIcon}</span>
+              <b style='color:${senderColor}; font-size: 0.9rem;'>${sender}</b>
+              <span style='margin-left: auto; font-size: 0.75rem; opacity: 0.6;'>${timestamp}</span>
+            </div>
+            <div style='color: #e0e0e0; line-height: 1.4;'>${msg.replace(/\n/g,'<br>')}</div>
+          </div>
+        `;
+        log.scrollTop = log.scrollHeight;
+      }
+      
+      send.onclick = askAI;
+      input.addEventListener('keydown', function(e){ 
+        if(e.key === 'Enter' && !e.shiftKey){ 
+          e.preventDefault();
+          askAI(); 
+        }
+      });
+      
+      function askAI() {
+        const q = input.value.trim();
+        if(!q) return;
+        
+        appendMsg('You', q);
+        input.value = '';
+        
+        // Show typing indicator
+        const typingMsg = appendMsg('AI', '<span style="color:#aaa"><i class="fas fa-spinner fa-spin"></i> Thinking...</span>');
+        
+        fetch('/core/chat/', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({question: q})
+        })
+        .then(res => res.json())
+        .then(data => {
+          // Remove the last message (typing indicator) and add the real response
+          log.removeChild(log.lastChild);
+          appendMsg('AI', data.answer);
+        })
+        .catch((error) => {
+          console.error('Chat error:', error);
+          log.removeChild(log.lastChild);
+          appendMsg('AI', 'Sorry, I\'m having trouble connecting right now. Please try again later or contact us directly through our contact form.');
+        });
+      }
+    </script>
+</body>
+</html> 

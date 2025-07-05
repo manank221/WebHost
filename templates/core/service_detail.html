@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% load myfilters %}
+
+{% block title %}{{ service.title }} | {{ settings.site_name }}{% endblock %}
+
+{% block content %}
+<div class="service-detail-container">
+    <h1>{{ service.title }}</h1>
+    <p>{{ service.detailed_description|linebreaks }}</p>
+    <h3>Features</h3>
+    <ul>
+        {% for feature in service.features %}
+            <li>{{ feature }}</li>
+        {% endfor %}
+    </ul>
+    {% if service.price_info %}
+        <h3>Pricing</h3>
+        {% with prices=service.price_info|from_json %}
+            {% if prices %}
+                <table class="pricing-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in prices %}
+                            <tr>
+                                <td>{{ item.service }}</td>
+                                <td>{{ item.description }}</td>
+                                <td>{{ item.price }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <pre>{{ service.price_info }}</pre>
+            {% endif %}
+        {% endwith %}
+    {% endif %}
+    <a href="{% url 'core:services' %}" class="btn btn-secondary mt-4">Back to Services</a>
+</div>
+{% endblock %} 

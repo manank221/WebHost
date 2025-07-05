@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block branding %}
+  <a href="{% url 'admin:index' %}" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+    <img src="{% static 'images/skillgrid_logo.png' %}" alt="SkillGrid Logo" style="height: 32px; width: auto; border-radius: 6px; box-shadow: 0 2px 8px #00c6ff33; background: transparent;" />
+    <span style="font-size: 1.3rem; font-weight: 700; color: #fff;">SkillGrid</span>
+  </a>
+{% endblock %} 
