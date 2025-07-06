@@ -11,6 +11,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.http import HttpResponse
 
 
 class HomeView(ContactView):
@@ -184,4 +186,15 @@ def services(request):
     return render(request, 'core/services.html', {'services': services_list})
 
 def home(request):
-    return render(request, 'core/home.html') 
+    return render(request, 'core/home.html')
+
+def create_superuser_view(request):
+    User = get_user_model()
+    username = 'admin'
+    email = 'admin@example.com'
+    password = 'admin1234'
+    if not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username=username, email=email, password=password)
+        return HttpResponse('Superuser created! Username: admin, Password: admin1234')
+    else:
+        return HttpResponse('Superuser already exists.') 
